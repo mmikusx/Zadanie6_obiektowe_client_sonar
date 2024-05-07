@@ -1,8 +1,9 @@
 import React, { useState, createContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-export const OrderContext = React.createContext([[], () => {}, () => {}, [], () => {}]);
+export const OrderContext = createContext();
 
-export const OrderProvider = (props) => { // Zmieniono nazwę na OrderProvider
+export const OrderProvider = (props) => {
     const [orderItems, setOrderItems] = useState([]);
     const [services, setServices] = useState([]);
 
@@ -13,13 +14,11 @@ export const OrderProvider = (props) => { // Zmieniono nazwę na OrderProvider
             .catch(error => console.error('Error fetching services:', error));
     }, []);
 
-    const removeFromOrder = (service) => { // Zmieniono nazwę na removeFromOrder
+    const removeFromOrder = (service) => {
         const serviceInOrder = orderItems.find(item => item.service.id === service.id);
         if (serviceInOrder.quantity > 1) {
             setOrderItems(orderItems.map(item =>
-                item.service.id === service.id
-                    ? { ...item, quantity: item.quantity - 1 }
-                    : item
+                item.service.id === service.id ? { ...item, quantity: item.quantity - 1 } : item
             ));
         } else {
             setOrderItems(orderItems.filter(item => item.service.id !== service.id));
@@ -27,8 +26,12 @@ export const OrderProvider = (props) => { // Zmieniono nazwę na OrderProvider
     };
 
     return (
-        <OrderContext.Provider value={[orderItems, setOrderItems, removeFromOrder, services, setServices]}> {/* Zmieniono na OrderContext.Provider */}
+        <OrderContext.Provider value={{ orderItems, setOrderItems, removeFromOrder, services, setServices }}>
             {props.children}
         </OrderContext.Provider>
     );
+};
+
+OrderProvider.propTypes = {
+    children: PropTypes.node.isRequired
 };
