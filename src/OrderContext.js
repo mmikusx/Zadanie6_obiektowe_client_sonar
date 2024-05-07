@@ -1,9 +1,9 @@
-import React, { useState, createContext, useEffect } from 'react';
+import React, { useState, createContext, useContext, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 export const OrderContext = createContext();
 
-export const OrderProvider = (props) => {
+export const OrderProvider = ({ children }) => {
     const [orderItems, setOrderItems] = useState([]);
     const [services, setServices] = useState([]);
 
@@ -25,9 +25,17 @@ export const OrderProvider = (props) => {
         }
     };
 
+    const value = useMemo(() => ({
+        orderItems,
+        setOrderItems,
+        removeFromOrder,
+        services,
+        setServices
+    }), [orderItems, services]);
+
     return (
-        <OrderContext.Provider value={{ orderItems, setOrderItems, removeFromOrder, services, setServices }}>
-            {props.children}
+        <OrderContext.Provider value={value}>
+            {children}
         </OrderContext.Provider>
     );
 };
