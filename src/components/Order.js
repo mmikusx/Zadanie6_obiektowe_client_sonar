@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { OrderContext } from '../OrderContext';
 
 function Order() {
-    const { orderItems, removeFromOrder, services } = useContext(OrderContext);
+    const { orderItems, removeFromOrder } = useContext(OrderContext);
     const totalCost = orderItems.reduce((total, item) => total + item.service.price * item.quantity, 0);
 
     return (

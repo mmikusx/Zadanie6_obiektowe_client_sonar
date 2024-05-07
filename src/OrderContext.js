@@ -1,4 +1,4 @@
-import React, { useState, createContext, useContext, useEffect, useMemo } from 'react';
+import React, { useState, createContext, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 export const OrderContext = createContext();
